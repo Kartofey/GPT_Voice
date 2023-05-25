@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from 'openai'
-import config from 'config';
-import { createReadStream } from 'fs';
+import config from 'config'
+import { createReadStream } from 'fs'
 
 class OpenAI {
   roles = {
@@ -12,7 +12,7 @@ class OpenAI {
   constructor(apiKey) {
     const configuration = new Configuration({
       apiKey,
-    });
+    })
     this.openai = new OpenAIApi(configuration)
   }
 
@@ -24,7 +24,7 @@ class OpenAI {
       })
       return response.data.choices[0].message
     } catch (e) {
-      console.log('Error while gpt chating', e.message)
+      console.log('Error while gpt chat', e.message)
     }
   }
 
@@ -33,7 +33,7 @@ class OpenAI {
       const response = await this.openai.createTranscription(
         createReadStream(filepath),
         'whisper-1'
-        )
+      )
       return response.data.text
     } catch (e) {
       console.log('Error while transcription', e.message)

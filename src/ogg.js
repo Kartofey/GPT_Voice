@@ -1,10 +1,9 @@
-import axios from "axios"
+import axios from 'axios'
 import ffmpeg from 'fluent-ffmpeg'
 import installer from '@ffmpeg-installer/ffmpeg'
-import { createWriteStream } from 'fs';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { removeFile } from "./utils.js";
+import { createWriteStream } from 'fs'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -20,10 +19,7 @@ class OggConverter {
         ffmpeg(input)
           .inputOption('-t 30')
           .output(outputPath)
-          .on('end', () => {
-            removeFile(input)
-            resolve(outputPath)
-          })
+          .on('end', () => resolve(outputPath))
           .on('error', (err) => reject(err.message))
           .run()
       })
@@ -40,15 +36,15 @@ class OggConverter {
         url,
         responseType: 'stream',
       })
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         const stream = createWriteStream(oggPath)
         response.data.pipe(stream)
         stream.on('finish', () => resolve(oggPath))
       })
     } catch (e) {
-      console.log(`Error while creating ogg`, e.message)
+      console.log('Error while creating ogg', e.message)
     }
   }
 }
 
-export const ogg = new OggConverter() 
+export const ogg = new OggConverter()
