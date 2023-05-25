@@ -1,4 +1,5 @@
 import { openai } from './openai.js'
+import { textConverter } from './text.js'
 
 export const INITIAL_SESSION = {
   messages: [],
@@ -6,7 +7,7 @@ export const INITIAL_SESSION = {
 
 export async function initCommand(ctx) {
   ctx.session = { ...INITIAL_SESSION }
-  await ctx.reply('Жду вашего сообщения')
+  await ctx.reply('Жду нового сообщения')
 }
 
 export async function processTextToChat(ctx, content) {
@@ -19,6 +20,13 @@ export async function processTextToChat(ctx, content) {
       role: openai.roles.ASSISTANT,
       content: response.content,
     })
+
+    const source = await textConverter.textToSpeech(response.content)
+
+    await ctx.sendAudio(
+      { source },
+      { title: 'Ответ от ассистента', performer: 'ChatGPT' }
+    )
 
     await ctx.reply(response.content)
   } catch (e) {
