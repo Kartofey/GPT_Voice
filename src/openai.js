@@ -4,9 +4,9 @@ import { createReadStream } from 'fs';
 
 class OpenAI {
   roles = {
-    ASSISTANT: 'assistan',
+    ASSISTANT: 'assistant',
     USER: 'user',
-    SYSTEM: 'system'
+    SYSTEM: 'system',
   }
 
   constructor(apiKey) {
@@ -30,7 +30,10 @@ class OpenAI {
 
   async transcription(filepath) {
     try {
-      const response = await this.openai.createTranscription(createReadStream(filepath), 'whisper-1')
+      const response = await this.openai.createTranscription(
+        createReadStream(filepath),
+        'whisper-1'
+        )
       return response.data.text
     } catch (e) {
       console.log('Error while transcription', e.message)
