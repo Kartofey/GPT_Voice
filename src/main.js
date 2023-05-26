@@ -5,7 +5,7 @@ import config from 'config'
 import { ogg } from './ogg.js'
 import { openai } from './openai.js'
 import { removeFile } from './utils.js'
-import { initCommand, processTextToChat, INITIAL_SESSION } from './logic.js'
+import { initCommand, processTextToChat, outputTextCommand, outputAudioCommand, OUTPUT_FORMAT, INITIAL_SESSION } from './logic.js'
 
 const bot = new Telegraf(config.get('TELEGRAM_TOKEN'))
 
@@ -14,6 +14,10 @@ bot.use(session())
 bot.command('new', initCommand)
 
 bot.command('start', initCommand)
+
+bot.command('audio', outputAudioCommand)
+
+bot.command('text', outputTextCommand)
 
 bot.on(message('voice'), async (ctx) => {
   ctx.session ??= INITIAL_SESSION
